@@ -21,8 +21,8 @@ public class AdCampaignController {
 		return adCampaignService.getActiveAdCampaign(partnerId);
 	}
 
-    @RequestMapping(method=RequestMethod.PUT, value="/adcampaign")
+    @RequestMapping(method=RequestMethod.POST, value="/adcampaign")
     public AdCampaign CreateAdCampaign(@RequestBody AdCampaign adcampaign) {
-        return adcampaign;
+        return adCampaignService.createAdCampaign(adcampaign);
     }
 }
