@@ -2,6 +2,8 @@ package adServer;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
@@ -11,41 +13,36 @@ import org.slf4j.LoggerFactory;
 @Service("AdCampaignService")
 public class AdCampaignServiceInMemoryImpl implements AdCampaignService {
 	
+	private static final AtomicLong counter = new AtomicLong();
 	private List<AdCampaign> adCampaignList;
 	// Define the logger object for this class
-	  private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	// static initializer for testing purposes
 	{
+		//adCampaignId = 0; 	// obviously this would be in the datastore in 
+							// a non-toy implementation.
 		adCampaignList = new LinkedList<AdCampaign>();
-		adCampaignList.add(new AdCampaign("Red Partner", 86400, "Buy Red's great products!", "Great Red Stuff", AdStatus.Active));
-		adCampaignList.add(new AdCampaign("Green Partner", 10, "Buy Green's so-so products!", "So-so Green Stuff", AdStatus.Inactive));
-		adCampaignList.add(new AdCampaign("Blue Partner", 86400, "Buy Blue's terrible products!", "Terrible Blue Stuff", AdStatus.Active));
+		adCampaignList.add(new AdCampaign(counter.incrementAndGet(), "Red Partner", 86400, "Buy Red's great products!", "Great Red Stuff", AdStatus.Active));
+		adCampaignList.add(new AdCampaign(counter.incrementAndGet(), "Green Partner", 10, "Buy Green's so-so products!", "So-so Green Stuff", AdStatus.Inactive));
+		adCampaignList.add(new AdCampaign(counter.incrementAndGet(), "Blue Partner", 86400, "Buy Blue's terrible products!", "Terrible Blue Stuff", AdStatus.Active));
+
 	}
 
 	@Override
 	public AdCampaign createAdCampaign(AdCampaign adCampaign) {
-		// check that it doesn't already exist. We're going to use
-		// the partner_id, title, and content as a compound
-		// key since there wasn't a generated ID specified in the requirements.
-		// This is totally inefficient in a list lookup; I'd use an RDBMS or
-		// object store like CouchBase if doing this for real and use a generated
-		// keyspace for partitioning/uniqueness. Optimizations not going to be
-		// addressed in a coding exercise...
-		AdCampaign result = null;
-		Boolean exists = false;
-		for (AdCampaign ac : adCampaignList ) {
-			if (ac.getPartnerId().equals(adCampaign.getPartnerId()) 
-					&& ac.getAdTitle().equals(adCampaign.getAdTitle())
-					&& ac.getAdContent().equals(adCampaign.getAdContent()))
-			{
-				exists = true;
+		AdCampaign result = adCampaign;
+		for (AdCampaign savedCampaign : adCampaignList) {
+			if (savedCampaign.getPartnerId().equals(adCampaign.getPartnerId())
+				&& savedCampaign.getAdStatus().equals(AdStatus.Active)) {
+				result = null;
 				break;
 			}
 		}
-		if (!exists) {
+		if (result != null) {
+		adCampaign.setAdCampaignId(counter.incrementAndGet());
 			adCampaignList.add(adCampaign);
-			result = adCampaign;
 		}
+
 		return result;
 	}
 
@@ -94,7 +91,7 @@ public class AdCampaignServiceInMemoryImpl implements AdCampaignService {
 		for (AdCampaign ac : adCampaignList ) {
 			if (ac.getPartnerId().equals(partnerId) 
 					&& ac.getAdStatus().equals(AdStatus.Active)
-					&& ac.getDuration() > 0 )
+					&& ac.getExpiration() > (System.currentTimeMillis()/1000) )
 			{
 				resultList.add(ac);
 			}

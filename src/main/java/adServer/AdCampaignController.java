@@ -32,7 +32,7 @@ public class AdCampaignController {
     public ResponseEntity<AdCampaign> CreateAdCampaign(@RequestBody AdCampaign adcampaign) {
     	AdCampaign newCampaign = adCampaignService.createAdCampaign(adcampaign);
     	if (newCampaign == null) {
-    		return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity(HttpStatus.CONFLICT);
     	} else {
             return new ResponseEntity<AdCampaign>(newCampaign, HttpStatus.CREATED);
     	}

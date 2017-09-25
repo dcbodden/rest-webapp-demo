@@ -1,5 +1,7 @@
 package adServer;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,23 +12,22 @@ public class AdCampaign {
 //		"ad_content": "string_of_content_to_display_as_ad",
 	//	"ad_title": "string_of_title_to_display",
 		//"ad_status": “string_of_status_indicating_Active_or_Inactive”
+	private long 		adCampaignId;
 	@JsonProperty(value="partner_id")
     private String 		partnerId;
     private long 		duration;
     private String 		adContent;
     private String		adTitle;
     private AdStatus	adStatus;
-    
-    @JsonIgnore
     private long		expiration;
 
     
     public AdCampaign() {
 
-        this.adStatus = AdStatus.Active;
     }
     
-    public AdCampaign(String partner_id, long duration, String ad_content, String ad_title, AdStatus ad_status) {
+    public AdCampaign(long adCampaignId, String partner_id, long duration, String ad_content, String ad_title, AdStatus ad_status) {
+    	this.adCampaignId = adCampaignId;
     	this.partnerId = partner_id;
         this.duration = duration;
         this.adContent = ad_content;
@@ -34,6 +35,14 @@ public class AdCampaign {
         this.adStatus = ad_status;
         //this.adStatus = AdStatus.Active;
         this.expiration = (System.currentTimeMillis() / 1000) + duration;
+    }
+    
+    public long getAdCampaignId() {
+    	return this.adCampaignId;
+    }
+    
+    public void setAdCampaignId(long adCampaignId ) {
+    	this.adCampaignId = adCampaignId;
     }
 
     public String getPartnerId() {
@@ -45,8 +54,7 @@ public class AdCampaign {
     }
     
     public long getDuration() {
-    	long value = expiration - ( System.currentTimeMillis() / 1000 );
-    	return value < 0 ? 0 : value;
+    	return this.duration;
     }
     
     public void setDuration(long duration) {
