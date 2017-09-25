@@ -1,5 +1,4 @@
-This is a demo for a coding exercise. I'll avoid rehashing the requirements 
-as it's already too easy to find other samples with the spec published online.
+This is a demo for a coding exercise. I'll avoid rehashing the requirements as it's already too easy to find other samples with the spec published online.
 
 Build/execute: "gradle bootRun" in the project root.
 
