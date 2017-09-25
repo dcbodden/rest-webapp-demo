@@ -26,14 +26,13 @@ public class AdCampaign {
         this.adStatus = AdStatus.Active;
     }
     
-    public AdCampaign(String partner_id, long duration, String ad_content, String ad_title, String ad_status) {
-    //public AdCampaign(String partner_id) {
+    public AdCampaign(String partner_id, long duration, String ad_content, String ad_title, AdStatus ad_status) {
     	this.partnerId = partner_id;
         this.duration = duration;
         this.adContent = ad_content;
         this.adTitle = ad_title;
-        //this.adStatus = ad_status;
-        this.adStatus = AdStatus.Active;
+        this.adStatus = ad_status;
+        //this.adStatus = AdStatus.Active;
         this.expiration = (System.currentTimeMillis() / 1000) + duration;
     }
 

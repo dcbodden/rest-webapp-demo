@@ -17,15 +17,15 @@ public class AdCampaignServiceInMemoryImpl implements AdCampaignService {
 	// static initializer for testing purposes
 	{
 		adCampaignList = new LinkedList<AdCampaign>();
-		adCampaignList.add(new AdCampaign("Red Partner", 86400, "Buy Red's great products!", "Great Red Stuff", "AdStatus.Active"));
-		adCampaignList.add(new AdCampaign("Green Partner", 10, "Buy Green's so-so products!", "So-so Green Stuff", "AdStatus.Active"));
-		adCampaignList.add(new AdCampaign("Blue Partner", 86400, "Buy Blue's terrible products!", "Terrible Blue Stuff", "AdStatus.Active"));
+		adCampaignList.add(new AdCampaign("Red Partner", 86400, "Buy Red's great products!", "Great Red Stuff", AdStatus.Active));
+		adCampaignList.add(new AdCampaign("Green Partner", 10, "Buy Green's so-so products!", "So-so Green Stuff", AdStatus.Inactive));
+		adCampaignList.add(new AdCampaign("Blue Partner", 86400, "Buy Blue's terrible products!", "Terrible Blue Stuff", AdStatus.Active));
 	}
 
 	@Override
 	public AdCampaign createAdCampaign(AdCampaign adCampaign) {
 		// check that it doesn't already exist. We're going to use
-		// the partner_id, title, content, and duration as a compound
+		// the partner_id, title, and content as a compound
 		// key since there wasn't a generated ID specified in the requirements.
 		// This is totally inefficient in a list lookup; I'd use an RDBMS or
 		// object store like CouchBase if doing this for real and use a generated
@@ -35,7 +35,6 @@ public class AdCampaignServiceInMemoryImpl implements AdCampaignService {
 		Boolean exists = false;
 		for (AdCampaign ac : adCampaignList ) {
 			if (ac.getPartnerId().equals(adCampaign.getPartnerId()) 
-					&& ac.getDuration() == adCampaign.getDuration()
 					&& ac.getAdTitle().equals(adCampaign.getAdTitle())
 					&& ac.getAdContent().equals(adCampaign.getAdContent()))
 			{
