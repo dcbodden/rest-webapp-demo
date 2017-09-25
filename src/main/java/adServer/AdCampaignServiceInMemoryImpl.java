@@ -22,9 +22,9 @@ public class AdCampaignServiceInMemoryImpl implements AdCampaignService {
 		//adCampaignId = 0; 	// obviously this would be in the datastore in 
 							// a non-toy implementation.
 		adCampaignList = new LinkedList<AdCampaign>();
-		adCampaignList.add(new AdCampaign(counter.incrementAndGet(), "Red Partner", 86400, "Buy Red's great products!", "Great Red Stuff", AdStatus.Active));
-		adCampaignList.add(new AdCampaign(counter.incrementAndGet(), "Green Partner", 10, "Buy Green's so-so products!", "So-so Green Stuff", AdStatus.Inactive));
-		adCampaignList.add(new AdCampaign(counter.incrementAndGet(), "Blue Partner", 86400, "Buy Blue's terrible products!", "Terrible Blue Stuff", AdStatus.Active));
+//		adCampaignList.add(new AdCampaign(counter.incrementAndGet(), "Red Partner", 86400, "Buy Red's great products!", "Great Red Stuff", AdStatus.Active));
+//		adCampaignList.add(new AdCampaign(counter.incrementAndGet(), "Green Partner", 10, "Buy Green's so-so products!", "So-so Green Stuff", AdStatus.Inactive));
+//		adCampaignList.add(new AdCampaign(counter.incrementAndGet(), "Blue Partner", 86400, "Buy Blue's terrible products!", "Terrible Blue Stuff", AdStatus.Active));
 
 	}
 
