@@ -93,8 +93,29 @@ public class AdCampaignServiceInMemoryImpl implements AdCampaignService {
 
 	@Override
 	public AdCampaign updateAdCampaign(AdCampaign adCampaign) {
-		// TODO Auto-generated method stub
-		return null;
+		// retrieve the ad campaign with the relevant ID from the store.
+		// If there isn't one, it's a bad request, but I'd like to
+		// eventually distinguish between that failure, and the failure
+		// if they try to change the partner id.
+		AdCampaign result = null;
+		log.info("Entered service method updateAdCampaign");
+		for (AdCampaign ac : adCampaignList) {
+			if (ac.getAdCampaignId() == adCampaign.getAdCampaignId()) {
+				if (!ac.getPartnerId().equals(adCampaign.getPartnerId())) {
+					log.info("Illegal operation - attempted to change the partner ID for AdCampaign: " + adCampaign.getAdCampaignId());
+				} else {
+					ac.setAdContent(adCampaign.getAdContent());
+					ac.setDuration(adCampaign.getDuration()); // resets expiration, too...
+					ac.setAdTitle(adCampaign.getAdTitle());
+					// can't do ad_status because we're in a "one active" world here.
+					// that could change later but truly that's an administrative
+					// fact and not related to the content itself.
+					result = ac;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override

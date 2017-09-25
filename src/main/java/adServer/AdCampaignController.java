@@ -3,6 +3,8 @@ package adServer;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,12 @@ public class AdCampaignController {
 	
 	@Autowired
 	private AdCampaignService adCampaignService;
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@RequestMapping(method=RequestMethod.GET, value="/adcampaign", params = "partner_id")
 	public ResponseEntity<AdCampaign> getAdCampaign(@RequestParam(value="partner_id", defaultValue="") String partnerId) {
-		
+    	log.info("Entered controller method getAdCampaign");
 		AdCampaign adCampaign = adCampaignService.getActiveAdCampaign(partnerId);
 		if (adCampaign == null) {
     		return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -82,6 +86,18 @@ public class AdCampaignController {
     		return new ResponseEntity(HttpStatus.CONFLICT);
     	} else {
             return new ResponseEntity<AdCampaign>(newCampaign, HttpStatus.CREATED);
+    	}
+    }
+    
+    @RequestMapping(method=RequestMethod.PUT, value="/adcampaign/{id}")
+    public ResponseEntity<AdCampaign> updateAdCampaign(@RequestBody AdCampaign adcampaign, @PathVariable("id") long adCampaignId) {
+    	log.info("Entered controller method UpdateAdCampaign");
+    	adcampaign.setAdCampaignId(adCampaignId);
+    	AdCampaign newCampaign = adCampaignService.updateAdCampaign(adcampaign);
+    	if (newCampaign == null) {
+    		return new ResponseEntity(HttpStatus.CONFLICT);
+    	} else {
+            return new ResponseEntity<AdCampaign>(newCampaign, HttpStatus.OK);
     	}
     }
 }
