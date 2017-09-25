@@ -48,27 +48,48 @@ public class AdCampaignServiceInMemoryImpl implements AdCampaignService {
 
 	@Override
 	public List<AdCampaign> getAdCampaignByTitle(String title) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<AdCampaign> getAdCampaignByContent(String content) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<AdCampaign> getAdCampaignByDuration(long duration) {
-		// TODO Auto-generated method stub
-		return null;
+		List<AdCampaign> result = new LinkedList<AdCampaign>();
+		for (AdCampaign ac : adCampaignList) {
+			if (ac.getAdTitle().equals(title)) {
+				result.add(ac);
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public List<AdCampaign> getAdCampaignByTitleAndDuration(String title, long duration) {
-		// TODO Auto-generated method stub
-		return null;
+		List<AdCampaign> result = new LinkedList<AdCampaign>();
+		for (AdCampaign ac : adCampaignList) {
+			if (ac.getAdTitle().equals(title) && (ac.getDuration() == duration)) {
+				result.add(ac);
+			}
+		}
+		return result;
 	}
+	
+	@Override
+	public List<AdCampaign> getAdCampaignByContent(String content) {
+		List<AdCampaign> result = new LinkedList<AdCampaign>();
+		for (AdCampaign ac : adCampaignList) {
+			if (ac.getAdContent().equals(content)) {
+				result.add(ac);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<AdCampaign> getAdCampaignByDuration(long duration) {
+		List<AdCampaign> result = new LinkedList<AdCampaign>();
+		for (AdCampaign ac : adCampaignList) {
+			if (ac.getDuration() == duration) {
+				result.add(ac);
+			}
+		}
+		return result;
+	}
+
 
 	@Override
 	public AdCampaign updateAdCampaign(AdCampaign adCampaign) {
